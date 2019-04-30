@@ -1,0 +1,11 @@
+name: doobie-pool
+baseurl: /doobie-pool
+description: Database Connection Pool
+highlighter: rouge
+docs: true
+collections:
+  tut:
+    output: true
+version: 0.0.2-SNAPSHOT
+org: io.chrisdavenport
+markdown: kramdown
