@@ -26,7 +26,7 @@ object PooledTransactor {
       .map(impl(pool, _, transactEC))
 
   /**
-   * Create a Transactor with an Externally Controllable Semaphore
+   * Create a Transactor with an Externally Inspectable/Controllable Semaphore
    */
   def impl[F[_]: Concurrent: ContextShift](
     pool: KeyPool[F, Unit, Connection],
