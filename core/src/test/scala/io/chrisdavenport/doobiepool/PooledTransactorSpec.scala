@@ -93,7 +93,7 @@ class PooledTransactorSpec extends Specification {
       val tracker = new ConnectionTracker
       val test: Resource[IO, Int] = for {
         p <- pool[IO]
-        t <- Resource.liftF(PooledTransactor(p, 10, ExecutionContext.global))
+        t <- Resource.liftF(PooledTransactor(p, 2, ExecutionContext.global))
         transactor = tracker.track[IO](t)
         _ <- Resource.liftF(
           List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor)  >> Timer[IO].sleep(1.second))
@@ -101,7 +101,7 @@ class PooledTransactorSpec extends Specification {
         state <- Resource.liftF(p.state)
       } yield state._1
 
-      test.use(_.pure[IO]).unsafeRunSync must_=== 10
+      test.use(_.pure[IO]).unsafeRunSync must_=== 2
     }
     "Only Allow N connections active at once" in {
       val tracker = new ConnectionTracker
