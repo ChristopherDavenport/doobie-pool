@@ -19,21 +19,28 @@ object PooledTransactor {
    */
   def apply[F[_]: Concurrent: ContextShift](
     pool: KeyPool[F, Unit, Connection],
-    transactEC: ExecutionContext,
-    maxConnectionsActive: Int // Should this be Int with an Effect or Take a Semaphore Explicitly? Starting with
-    // int is the more reserved choice.
+    maxConnectionsActive: Int,
+    transactEC: ExecutionContext
   ): F[Transactor[F]] =
-    Semaphore[F](maxConnectionsActive.toLong).map( sem =>
-      Transactor(
-        pool,
-        {p: KeyPool[F, Unit, Connection] =>
-          Resource.make(sem.acquire)(_ => sem.release) >>
-          p.take(()).map(_.resource)
-        },
-        KleisliInterpreter[F](transactEC).ConnectionInterpreter,
-        Strategy.default
-      )
-    )
+    Semaphore[F](maxConnectionsActive.toLong)
+      .map(impl(pool, _, transactEC))
+
+  /**
+   * Create a Transactor with an Externally Controllable Semaphore
+   */
+  def impl[F[_]: Concurrent: ContextShift](
+    pool: KeyPool[F, Unit, Connection],
+    activeConnections: Semaphore[F],
+    transactEC: ExecutionContext
+  ): Transactor[F] = Transactor(
+    pool,
+    {p: KeyPool[F, Unit, Connection] =>
+      Resource.make(activeConnections.acquire)(_ => activeConnections.release) >>
+      p.take(()).map(_.resource)
+    },
+    KleisliInterpreter[F](transactEC).ConnectionInterpreter,
+    Strategy.default
+  )
 
   private def create[F[_]: Concurrent: Timer : ContextShift](
     driver: String,
