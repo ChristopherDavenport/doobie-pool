@@ -7,6 +7,7 @@ import doobie._
 import doobie.implicits._
 import org.specs2.mutable.Specification
 import scala.concurrent.ExecutionContext
+import scala.concurrent.duration._
 
 class PooledTransactorSpec extends Specification {
 
@@ -110,7 +111,7 @@ class PooledTransactorSpec extends Specification {
         t  = PooledTransactor.impl(p, sem, ExecutionContext.global)
         transactor = tracker.track[IO](t)
         _ <- Resource.liftF(
-          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor))
+          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor) >> Timer[IO].sleep(1.second))
         )
         state <- Resource.liftF(p.state)
       } yield state._1
