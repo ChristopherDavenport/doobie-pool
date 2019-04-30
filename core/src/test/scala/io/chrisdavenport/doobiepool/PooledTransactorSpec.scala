@@ -96,7 +96,7 @@ class PooledTransactorSpec extends Specification {
         t <- Resource.liftF(PooledTransactor(p, 10, ExecutionContext.global))
         transactor = tracker.track[IO](t)
         _ <- Resource.liftF(
-          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor))
+          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor)  >> Timer[IO].sleep(1.second))
         )
         state <- Resource.liftF(p.state)
       } yield state._1
@@ -111,7 +111,7 @@ class PooledTransactorSpec extends Specification {
         t  = PooledTransactor.impl(p, sem, ExecutionContext.global)
         transactor = tracker.track[IO](t)
         _ <- Resource.liftF(
-          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor) >> Timer[IO].sleep(1.second))
+          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor))
         )
         state <- Resource.liftF(p.state)
       } yield state._1
