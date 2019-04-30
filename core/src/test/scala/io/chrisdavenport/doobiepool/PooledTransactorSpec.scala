@@ -1,8 +1,8 @@
 package io.chrisdavenport.doobiepool
 
 import cats.effect._
-// import cats.effect.implicits._
-// import cats.implicits._
+import cats.effect.concurrent._
+import cats.implicits._
 import doobie._
 import doobie.implicits._
 import org.specs2.mutable.Specification
@@ -15,14 +15,17 @@ class PooledTransactorSpec extends Specification {
 
   implicit val timer: Timer[IO] = IO.timer(ExecutionContext.global)
 
-  def xa[A[_]: Concurrent: Timer: ContextShift] = PooledTransactor.pool(
+  def pool[F[_]: Concurrent: Timer: ContextShift] = PooledTransactor.pool(
     "org.h2.Driver",
     "jdbc:h2:mem:queryspec;DB_CLOSE_DELAY=-1",
-    "sa", 
+    "sa",
     "",
     10,
     ExecutionContext.global
-  ).evalMap(PooledTransactor(_, ExecutionContext.global, 10))
+  )
+
+  def xa[A[_]: Concurrent: Timer: ContextShift] =
+    pool[A].evalMap(PooledTransactor(_, 10, ExecutionContext.global))
 
   "PooledTransactor" should {
 
@@ -81,6 +84,38 @@ class PooledTransactorSpec extends Specification {
       val transactor = xa[IO].map(tracker.track[IO](_))
       transactor.use(t => sql"abc".query[Int].stream.compile.toList.transact(t).attempt).unsafeRunSync.toOption must_== None
       tracker.connections.map(_.isClosed) must_== List(true)
+    }
+  }
+
+  "Num Connections" >> {
+    "Only Allow Connection Number in Pool " in {
+      val tracker = new ConnectionTracker
+      val test: Resource[IO, Int] = for {
+        p <- pool[IO]
+        t <- Resource.liftF(PooledTransactor(p, 10, ExecutionContext.global))
+        transactor = tracker.track[IO](t)
+        _ <- Resource.liftF(
+          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor))
+        )
+        state <- Resource.liftF(p.state)
+      } yield state._1
+
+      test.use(_.pure[IO]).unsafeRunSync must_=== 10
+    }
+    "Only Allow N connections active at once" in {
+      val tracker = new ConnectionTracker
+      val test: Resource[IO, Int] = for {
+        p <- pool[IO]
+        sem <- Resource.liftF(Semaphore[IO](2))
+        t  = PooledTransactor.impl(p, sem, ExecutionContext.global)
+        transactor = tracker.track[IO](t)
+        _ <- Resource.liftF(
+          List.fill(100)(()).parTraverse(_ => sql"select 1".query[Int].unique.transact(transactor))
+        )
+        state <- Resource.liftF(p.state)
+      } yield state._1
+
+      test.use(_.pure[IO]).unsafeRunSync must_=== 2
     }
   }
 
