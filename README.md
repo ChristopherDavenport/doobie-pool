@@ -1,4 +1,4 @@
-# doobie-pool - Referentially Transparent Doobie Connection Pool [![Build Status](https://travis-ci.com/ChristopherDavenport/doobie-pool.svg?branch=master)](https://travis-ci.com/ChristopherDavenport/doobie-pool) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12)
+# doobie-pool - Database Connection Pool [![Build Status](https://travis-ci.com/ChristopherDavenport/doobie-pool.svg?branch=master)](https://travis-ci.com/ChristopherDavenport/doobie-pool) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12)
 
 ## [Head on over to the microsite](https://ChristopherDavenport.github.io/doobie-pool)
 

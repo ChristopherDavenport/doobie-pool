@@ -202,7 +202,7 @@ lazy val micrositeSettings = {
   import microsites._
   Seq(
     micrositeName := "doobie-pool",
-    micrositeDescription := "Referentially Transparent Doobie Connection Pool",
+    micrositeDescription := "Database Connection Pool",
     micrositeAuthor := "Christopher Davenport",
     micrositeGithubOwner := "ChristopherDavenport",
     micrositeGithubRepo := "doobie-pool",

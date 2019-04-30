@@ -22,7 +22,7 @@ object PooledTransactor {
     transactEC: ExecutionContext,
     maxConnectionsActive: Int // Should this be Int with an Effect or Take a Semaphore Explicitly? Starting with
     // int is the more reserved choice.
-  ): F[Transactor[F]] = 
+  ): F[Transactor[F]] =
     Semaphore[F](maxConnectionsActive.toLong).map( sem =>
       Transactor(
         pool,
@@ -54,6 +54,9 @@ object PooledTransactor {
     {_: Throwable => Sync[F].unit}
   )
 
+  /**
+   * Build a Pool of Connections, using the url.
+   */
   def pool[F[_]: Concurrent: Timer: ContextShift](
     driver: String,
     url:    String,
@@ -67,6 +70,9 @@ object PooledTransactor {
       connectEC
     )
 
+  /**
+   * Build a Pool of Connections, using the url, user, and password.
+   */
   def pool[F[_]: Concurrent: Timer: ContextShift](
     driver: String,
     url:    String,
@@ -82,6 +88,9 @@ object PooledTransactor {
       connectEC
     )
 
+  /**
+   * Build a Pool of Connections, using the url and connection info.
+   */
   def pool[F[_]: Concurrent: Timer: ContextShift](
     driver: String,
     url:    String,

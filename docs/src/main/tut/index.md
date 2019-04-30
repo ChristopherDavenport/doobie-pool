@@ -3,7 +3,7 @@ layout: home
 
 ---
 
-# doobie-pool - Referentially Transparent Doobie Connection Pool [![Build Status](https://travis-ci.com/ChristopherDavenport/doobie-pool.svg?branch=master)](https://travis-ci.com/ChristopherDavenport/doobie-pool) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12)
+# doobie-pool - Database Connection Pool [![Build Status](https://travis-ci.com/ChristopherDavenport/doobie-pool.svg?branch=master)](https://travis-ci.com/ChristopherDavenport/doobie-pool) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/doobie-pool_2.12)
 
 ## Quick Start
 
