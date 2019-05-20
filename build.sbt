@@ -40,7 +40,7 @@ val lineBackerV = "0.2.0"
 
 val specs2V = "4.5.1"
 
-val kindProjectorV = "0.10.0"
+val kindProjectorV = "0.10.1"
 val betterMonadicForV = "0.3.0"
 
 // General Settings
