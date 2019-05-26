@@ -28,7 +28,7 @@ val shapelessV = "2.3.3"
 val fs2V = "1.0.4"
 val http4sV = "0.20.0"
 val circeV = "0.11.1"
-val doobieV = "0.7.0-M5"
+val doobieV = "0.7.0"
 val pureConfigV = "0.10.2"
 val refinedV = "0.9.3"
 
