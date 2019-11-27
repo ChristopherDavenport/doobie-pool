@@ -30,7 +30,7 @@ val shapelessV = "2.3.3"
 val fs2V = "1.0.5"
 val http4sV = "0.20.0"
 val circeV = "0.11.1"
-val doobieV = "0.7.0"
+val doobieV = "0.7.1"
 val pureConfigV = "0.10.2"
 val refinedV = "0.9.3"
 
@@ -40,7 +40,7 @@ val catsTimeV = "0.2.0"
 val fuuidV = "0.2.0-RC1"
 val lineBackerV = "0.2.0"
 
-val specs2V = "4.7.0"
+val specs2V = "4.7.1"
 
 val kindProjectorV = "0.10.3"
 val betterMonadicForV = "0.3.1"
@@ -73,7 +73,7 @@ lazy val commonSettings = Seq(
     "org.tpolecat"                %% "doobie-core"                % doobieV,
     "io.chrisdavenport"           %% "keypool"                    % "0.1.0",
 
-    "com.h2database"              % "h2"                          % "1.4.199"     % Test,
+    "com.h2database"              % "h2"                          % "1.4.200"     % Test,
     "org.specs2"                  %% "specs2-core"                % specs2V       % Test,
     "org.specs2"                  %% "specs2-scalacheck"          % specs2V       % Test
   )
