@@ -40,7 +40,7 @@ val catsTimeV = "0.2.0"
 val fuuidV = "0.2.0-RC1"
 val lineBackerV = "0.2.0"
 
-val specs2V = "4.7.1"
+val specs2V = "4.9.0"
 
 val kindProjectorV = "0.10.3"
 val betterMonadicForV = "0.3.1"
