@@ -53,9 +53,9 @@ lazy val commonSettings = Seq(
   crossScalaVersions := Seq(scalaVersion.value, "2.11.12"),
   scalacOptions += "-Yrangepos",
 
-  scalacOptions in (Compile, doc) ++= Seq(
+  (Compile / doc / scalacOptions) ++= Seq(
       "-groups",
-      "-sourcepath", (baseDirectory in LocalRootProject).value.getAbsolutePath,
+      "-sourcepath", (LocalRootProject / baseDirectory).value.getAbsolutePath,
       "-doc-source-url", "https://github.com/ChristopherDavenport/doobie-pool/blob/v" + version.value + "€{FILE_PATH}.scala"
   ),
 
@@ -117,7 +117,7 @@ lazy val releaseSettings = {
           password
         )
     ).toSeq,
-    publishArtifact in Test := false,
+    (Test / publishArtifact) := false,
     releasePublishArtifactsAction := PgpKeys.publishSigned.value,
     scmInfo := Some(
       ScmInfo(
@@ -222,8 +222,8 @@ lazy val micrositeSettings = {
       "gray-lighter" -> "#F4F3F4",
       "white-color" -> "#FFFFFF"
     ),
-    fork in tut := true,
-    scalacOptions in Tut --= Seq(
+    (tut / fork) := true,
+    (Tut / scalacOptions) --= Seq(
       "-Xfatal-warnings",
       "-Ywarn-unused-import",
       "-Ywarn-numeric-widen",
@@ -243,7 +243,7 @@ lazy val micrositeSettings = {
 }
 
 lazy val skipOnPublishSettings = Seq(
-  skip in publish := true,
+  (publish / skip) := true,
   publish := (()),
   publishLocal := (()),
   publishArtifact := false,
