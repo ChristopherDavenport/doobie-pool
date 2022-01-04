@@ -73,7 +73,7 @@ lazy val commonSettings = Seq(
     "org.tpolecat"                %% "doobie-core"                % doobieV,
     "io.chrisdavenport"           %% "keypool"                    % "0.1.0",
 
-    "com.h2database"              % "h2"                          % "1.4.200"     % Test,
+    "com.h2database"              % "h2"                          % "2.0.206"     % Test,
     "org.specs2"                  %% "specs2-core"                % specs2V       % Test,
     "org.specs2"                  %% "specs2-scalacheck"          % specs2V       % Test
   )
